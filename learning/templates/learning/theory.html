@@ -421,7 +421,7 @@
 
                         <!-- Arrow -->
                         <path d="M220 100 L350 100" stroke="#666" stroke-width="4" fill="none" marker-end="url(#arrowhead)">
-                            <animate attributeName="stroke-dasharray" values="0,30;30,30" dur="2s" repeatCount="indefinite"/>
+                            <animate id="arrowAnim" attributeName="stroke-dasharray" values="0,30;30,30" dur="2s" begin="indefinite"/>
                         </path>
 
                         <!-- Server Box -->
@@ -438,12 +438,12 @@
 
                         <!-- Data packets -->
                         <circle cx="285" cy="85" r="5" fill="#28a745">
-                            <animateMotion dur="3s" repeatCount="indefinite">
+                            <animateMotion id="packet1Anim" dur="3s" begin="indefinite">
                                 <path d="M285 85 L400 85"/>
                             </animateMotion>
                         </circle>
                         <circle cx="285" cy="115" r="5" fill="#007bff">
-                            <animateMotion dur="3s" repeatCount="indefinite" begin="1s">
+                            <animateMotion id="packet2Anim" dur="3s" begin="indefinite">
                                 <path d="M285 115 L400 115"/>
                             </animateMotion>
                         </circle>
@@ -559,12 +559,27 @@
     <script>
         // Animazione richiesta
         function animateRequest() {
-            const svg = document.querySelector('svg');
-            if (svg) {
-                svg.style.animation = 'shake 0.5s ease-in-out';
+            // Avvia le animazioni SVG
+            const arrowAnim = document.getElementById('arrowAnim');
+            const packet1Anim = document.getElementById('packet1Anim');
+            const packet2Anim = document.getElementById('packet2Anim');
+
+            if (arrowAnim && packet1Anim && packet2Anim) {
+                // Riavvia le animazioni
+                arrowAnim.beginElement();
+                packet1Anim.beginElement();
                 setTimeout(() => {
-                    svg.style.animation = '';
-                }, 500);
+                    packet2Anim.beginElement();
+                }, 1000); // Il secondo pacchetto parte dopo 1 secondo
+
+                // Aggiungi anche un leggero shake per feedback visivo
+                const svg = document.querySelector('svg');
+                if (svg) {
+                    svg.style.animation = 'shake 0.3s ease-in-out';
+                    setTimeout(() => {
+                        svg.style.animation = '';
+                    }, 300);
+                }
             }
         }
 
