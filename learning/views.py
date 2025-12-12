@@ -101,7 +101,9 @@ def check_all_answers(request):
             if is_correct:
                 score += 1
             results.append({
-                'question': question,
+                'question_text': question.text,
+                'question_type': question.question_type,
+                'correct_answer': question.correct_answer,
                 'user_answer': user_answer,
                 'is_correct': is_correct
             })
