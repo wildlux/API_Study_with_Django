@@ -371,8 +371,16 @@
             const submitBtn = document.getElementById('submit-btn');
 
             prevBtn.disabled = currentQuestionIndex === 0;
-            nextBtn.disabled = currentQuestionIndex === questions - 1;
-            submitBtn.style.display = currentQuestionIndex === questions - 1 ? 'inline-block' : 'none';
+
+            // Per l'ultima domanda, nascondi "Successiva" e mostra solo "Invia risposte"
+            if (currentQuestionIndex === questions - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-block';
+            } else {
+                nextBtn.style.display = 'inline-block';
+                nextBtn.disabled = false;
+                submitBtn.style.display = 'none';
+            }
         }
 
         function showQuestion(index) {
@@ -397,16 +405,6 @@
             setTimeout(() => {
                 element.style.transform = 'scale(1)';
             }, 150);
-        }
-
-        function updateNavigationButtons() {
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const submitBtn = document.getElementById('submit-btn');
-
-            prevBtn.disabled = currentQuestionIndex === 0;
-            nextBtn.disabled = currentQuestionIndex === questions - 1;
-            submitBtn.style.display = currentQuestionIndex === questions - 1 ? 'inline-block' : 'none';
         }
 
         function updateProgress() {
