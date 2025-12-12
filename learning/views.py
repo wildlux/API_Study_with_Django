@@ -127,6 +127,10 @@ def quiz_results(request):
     percentage = request.session.get('quiz_percentage', 0)
     results = request.session.get('quiz_results', [])
 
+    # Se non ci sono risultati, reindirizza al quiz
+    if not results:
+        return redirect('quiz_home')
+
     return render(request, 'learning/quiz_final_result.html', {
         'score': score,
         'total': total,
