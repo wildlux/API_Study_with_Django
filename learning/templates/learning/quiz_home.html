@@ -332,7 +332,14 @@
                                 <div class="quiz-option" onclick="selectOption(this, 'q{{ question.id }}', '{{ forloop.counter|lower }}')">
                                     {{ option }}
                                 </div>
-                 {% endfor %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <input type="text" class="quiz-input" placeholder="Scrivi la tua risposta qui..." oninput="updateAnswer('q{{ question.id }}', this.value)">
+                    {% endif %}
+                    <input type="hidden" name="q{{ question.id }}" id="q{{ question.id }}_answer">
+                </div>
+                {% endfor %}
 
                 <div class="quiz-navigation" id="quiz-navigation" style="display: none;">
                     <button type="button" id="prev-btn" class="quiz-btn" onclick="prevQuestion()" disabled>← Precedente</button>
@@ -340,14 +347,6 @@
                     <button type="submit" id="submit-btn" class="quiz-btn" style="display: none; background: #28a745;">📤 Invia Risposte</button>
                 </div>
             </form>
-        </div>
-    </div>
-                    {% else %}
-                        <input type="text" class="quiz-input" placeholder="Scrivi la tua risposta qui..." oninput="updateAnswer('q{{ question.id }}', this.value)">
-                    {% endif %}
-                    <input type="hidden" name="q{{ question.id }}" id="q{{ question.id }}_answer">
-                </div>
-                 {% endfor %}
     </div>
 
     <script>
