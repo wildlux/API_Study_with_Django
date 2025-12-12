@@ -459,16 +459,16 @@
                         <p>Qui puoi vedere i dati che vengono utilizzati negli esercizi. Il database contiene utenti e post con nomi e città siciliane!</p>
 
                         <div class="database-tabs">
-                            <button class="db-tab active" onclick="showDatabase(event, 'users')">👥 Utenti</button>
-                            <button class="db-tab" onclick="showDatabase(event, 'posts')">📝 Post</button>
+                            <button class="db-tab active" onclick="showDatabase(event, 'original')">📊 Originale</button>
+                            <button class="db-tab" onclick="showDatabase(event, 'modified')">🔄 Modificato</button>
                         </div>
 
                         <div class="database-content">
-                            <div id="users-content">
-                                <!-- Users will be loaded here -->
+                            <div id="original-content">
+                                <!-- Original database will be loaded here -->
                             </div>
-                            <div id="posts-content" style="display: none;">
-                                <!-- Posts will be loaded here -->
+                            <div id="modified-content" style="display: none;">
+                                <!-- Modified database (with new users) will be loaded here -->
                             </div>
                         </div>
                     </div>
@@ -527,10 +527,10 @@
 
     <script>
         // Database simulator
-        let currentDatabase = 'users';
+        let currentDatabase = 'original';
         let databaseData = {
-            users: [],
-            posts: []
+            original: [],
+            modified: []
         };
 
         // Carica dati iniziali
@@ -558,56 +558,116 @@
                     }
                 });
 
-                databaseData.users = users;
+                // Salva dati originali
+                databaseData.original = [...users];
 
                 const postsResponse = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
-                databaseData.posts = await postsResponse.json();
+                const posts = await postsResponse.json();
 
-                showUsers();
-                showPosts();
-                showDatabase(null, 'users'); // Mostra utenti per default
+                // Salva dati originali completi
+                databaseData.original = {
+                    users: [...users],
+                    posts: [...posts]
+                };
+
+                // Inizializza dati modificati con copia degli originali
+                databaseData.modified = {
+                    users: [...users],
+                    posts: [...posts]
+                };
+
+                showOriginalData();
+                showModifiedData(); // Prepara anche i dati modificati
+                showDatabase(null, 'original'); // Mostra originali per default
             } catch (error) {
                 console.error('Errore nel caricamento del database:', error);
             }
         }
 
-        function showUsers() {
-            const content = document.getElementById('users-content');
-            const users = databaseData.users;
+        function showOriginalData() {
+            const content = document.getElementById('original-content');
+            const users = databaseData.original.users;
+            const posts = databaseData.original.posts;
+
             content.innerHTML = `
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Città</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${users.slice(0, 5).map(user => `
+                <div style="margin-bottom: 20px;">
+                    <h4>👥 Utenti Originali</h4>
+                    <table class="data-table">
+                        <thead>
                             <tr>
-                                <td>${user.id}</td>
-                                <td>${user.name}</td>
-                                <td>${user.email}</td>
-                                <td>${user.address?.city || 'N/A'}</td>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Città</th>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            ${users.slice(0, 5).map(user => `
+                                <tr>
+                                    <td>${user.id}</td>
+                                    <td>${user.name}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.address?.city || 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <h4>📝 Post Originali</h4>
+                    ${posts.map(post => `
+                        <div class="data-item">
+                            <h5>Post #${post.id}: ${post.title}</h5>
+                            <p>${post.body.substring(0, 100)}...</p>
+                            <small>Autore: Utente ${post.userId}</small>
+                        </div>
+                    `).join('')}
+                </div>
             `;
         }
 
-        function showPosts() {
-            const content = document.getElementById('posts-content');
-            const posts = databaseData.posts;
-            content.innerHTML = posts.map(post => `
-                <div class="data-item">
-                    <h5>Post #${post.id}: ${post.title}</h5>
-                    <p>${post.body.substring(0, 100)}...</p>
-                    <small>Autore: Utente ${post.userId}</small>
+        function showModifiedData() {
+            const content = document.getElementById('modified-content');
+            const users = databaseData.modified.users;
+            const posts = databaseData.modified.posts;
+
+            content.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <h4>👥 Utenti (inclusi quelli creati)</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Città</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${users.map(user => `
+                                <tr>
+                                    <td>${user.id}</td>
+                                    <td>${user.name}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.address?.city || 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
                 </div>
-            `).join('');
+
+                <div>
+                    <h4>📝 Post</h4>
+                    ${posts.map(post => `
+                        <div class="data-item">
+                            <h5>Post #${post.id}: ${post.title}</h5>
+                            <p>${post.body.substring(0, 100)}...</p>
+                            <small>Autore: Utente ${post.userId}</small>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
         }
 
         // Mostra database
@@ -624,26 +684,26 @@
                 event.target.classList.add('active');
             } else {
                 // Se chiamato programmaticamente, attiva il tab corrispondente
-                const usersTab = document.querySelector('.db-tab[onclick*="users"]');
-                const postsTab = document.querySelector('.db-tab[onclick*="posts"]');
+                const originalTab = document.querySelector('.db-tab[onclick*="original"]');
+                const modifiedTab = document.querySelector('.db-tab[onclick*="modified"]');
 
-                if (type === 'users' && usersTab) {
-                    usersTab.classList.add('active');
-                } else if (type === 'posts' && postsTab) {
-                    postsTab.classList.add('active');
+                if (type === 'original' && originalTab) {
+                    originalTab.classList.add('active');
+                } else if (type === 'modified' && modifiedTab) {
+                    modifiedTab.classList.add('active');
                 }
             }
 
             // Mostra/nascondi i contenuti
-            const usersContent = document.getElementById('users-content');
-            const postsContent = document.getElementById('posts-content');
+            const originalContent = document.getElementById('original-content');
+            const modifiedContent = document.getElementById('modified-content');
 
-            if (type === 'users') {
-                usersContent.style.display = 'block';
-                postsContent.style.display = 'none';
-            } else if (type === 'posts') {
-                usersContent.style.display = 'none';
-                postsContent.style.display = 'block';
+            if (type === 'original') {
+                originalContent.style.display = 'block';
+                modifiedContent.style.display = 'none';
+            } else if (type === 'modified') {
+                originalContent.style.display = 'none';
+                modifiedContent.style.display = 'block';
             }
         }
 
@@ -691,12 +751,17 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Aggiungi al database simulato
-                databaseData.users.push(data);
-                showUsers(); // Aggiorna vista
+                // Aggiungi al database modificato
+                databaseData.modified.users.push(data);
+
+                // Aggiorna la visualizzazione dei dati modificati
+                showModifiedData();
+
+                // Passa automaticamente al tab "Modificato" per mostrare il nuovo utente
+                showDatabase(null, 'modified');
 
                 document.getElementById('result2').innerHTML = `
-                    <div class="success">✅ Utente creato con successo! Controlla il database aggiornato.</div>
+                    <div class="success">✅ Utente creato con successo! Guarda la tabella "Modificato" per vedere il nuovo utente aggiunto.</div>
                     <pre class="json-response">${JSON.stringify(data, null, 2)}</pre>
                 `;
             })
