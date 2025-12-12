@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Test POST Request</title>
+</head>
+<body>
+    <h1>Test Richiesta POST</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="userName">Nome:</label>
+        <input type="text" name="userName" id="userName" required>
+        <button type="submit">Invia</button>
+    </form>
+</body>
+</html>

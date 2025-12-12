@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risultato Finale Quiz - API Learning Django</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+            25% { background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); }
+            50% { background: linear-gradient(225deg, #667eea 0%, #764ba2 100%); }
+            75% { background: linear-gradient(270deg, #667eea 0%, #764ba2 100%); }
+            100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        }
+
+        .container {
+            display: flex;
+            max-width: calc(100vw - 40px);
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-right: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar-item:hover {
+            background: #e9ecef;
+        }
+
+        .sidebar-item.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .sidebar-item a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        .arrow {
+            color: #28a745;
+            font-weight: bold;
+            margin-left: 5px;
+            font-size: 2em;
+        }
+
+        .main-area {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .score-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .percentage {
+            font-size: 1.5em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .results-list {
+            margin: 30px 0;
+        }
+
+        .result-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
+        }
+
+        .result-item.incorrect {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .result-item.correct {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            display: block;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-btn:hover {
+            background: #764ba2;
+        }
+
+        .show-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 20px 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .show-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-item"><a href="{% url 'home' %}">🏠 Home</a></div>
+            <div class="sidebar-item"><a href="{% url 'theory' %}">🌐 Teoria</a></div>
+            <div class="sidebar-item"><a href="{% url 'methods' %}">🔧 Metodi</a></div>
+            <div class="sidebar-item"><a href="{% url 'practice' %}">✍️ Pratica</a></div>
+            <div class="sidebar-item"><a href="{% url 'exercises' %}">💪 Esercizi</a></div>
+            <div class="sidebar-item active"><a href="{% url 'quiz_home' %}">📝 Quiz</a> <span class="arrow">👈</span></div>
+        </div>
+
+        <div class="main-area">
+            <div class="header">
+                <h1>Risultato Finale del Quiz</h1>
+            </div>
+
+            <div class="score-section">
+                <h2>📚 Apprendimento</h2>
+                <div class="score">{{ score }}/{{ total }}</div>
+                <div class="percentage">{{ percentage }}% di risposte corrette</div>
+                {% if score == total %}
+                    <p>🎉 Eccellente! Hai padroneggiato tutti i concetti!</p>
+                {% elif score >= 7 %}
+                    <p>👏 Ottimo progresso! Continua così.</p>
+                {% elif score >= 5 %}
+                    <p>👍 Buono! Ogni risposta corretta è un passo avanti.</p>
+                {% else %}
+                    <p>📚 Ogni errore è un'opportunità di apprendimento. Riprova!</p>
+                {% endif %}
+            </div>
+
+            <div class="results-section">
+                <button id="show-wrong-btn" class="show-btn" onclick="showWrongAnswers()">Mostra Risposte Sbagliate</button>
+                <div id="wrong-answers" class="results-list" style="display: none;">
+                    <h3>Risposte Sbagliate:</h3>
+                    {% for result in results %}
+                        {% if not result.is_correct %}
+                            <div class="result-item incorrect">
+                                <strong>Domanda {{ result.question }}:</strong>
+                                ❌ Sbagliata - Risposta corretta: {{ result.correct_answer }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not results|length %}
+                        <p>🎉 Nessuna risposta sbagliata! Tutte corrette!</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <a href="{% url 'quiz_home' %}" class="back-btn">← Riprova il Quiz</a>
+            <a href="{% url 'home' %}" class="back-btn">🏠 Torna alla Home</a>
+
+            <script>
+                function showWrongAnswers() {
+                    document.getElementById('wrong-answers').style.display = 'block';
+                    document.getElementById('show-wrong-btn').style.display = 'none';
+                }
+            </script>
+        </div>
+    </div>
+</body>
+</html>

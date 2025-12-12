@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pratica API - API Learning Django</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+            25% { background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); }
+            50% { background: linear-gradient(225deg, #667eea 0%, #764ba2 100%); }
+            75% { background: linear-gradient(270deg, #667eea 0%, #764ba2 100%); }
+            100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        }
+
+        .container {
+            display: flex;
+            max-width: calc(100vw - 40px);
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-right: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .sidebar-item:hover {
+            background: #e9ecef;
+        }
+
+        .sidebar-item.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .sidebar-item a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        .arrow {
+            color: #28a745;
+            font-weight: bold;
+            margin-left: 5px;
+            font-size: 2em;
+            line-height: 1;
+            vertical-align: middle;
+        }
+
+        .main-area {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #764ba2;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .database-section {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #ff9800;
+        }
+
+        .database-content {
+            display: flex;
+            gap: 20px;
+        }
+
+        .database-column {
+            flex: 1;
+        }
+
+        .database-column h4 {
+            margin-bottom: 15px;
+            color: #e65100;
+        }
+
+        .sub-exercise-box {
+            margin-top: 20px;
+        }
+
+        .database-section {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #ff9800;
+        }
+
+        .database-section h3 {
+            color: #e65100;
+            margin-bottom: 15px;
+        }
+
+        .database-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .db-tab {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #e0e0e0;
+            transition: background 0.3s ease;
+        }
+
+        .db-tab.active {
+            background: #ff9800;
+            color: white;
+        }
+
+        .db-tab:hover {
+            background: #ffb74d;
+        }
+
+        .database-content {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .data-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .interactive-section {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .test-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .test-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .simulation-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .simulation-header {
+            background: #333;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .simulation-content {
+            padding: 20px;
+            min-height: 100px;
+        }
+
+        .simulation-loading {
+            color: #ffa500;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .json-response {
+            background: #2d2d2d;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            margin-top: 10px;
+        }
+
+        .exercise-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .exercise-header {
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exercise-content {
+            padding: 20px;
+            display: none;
+        }
+
+        .exercise-toggle {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .code-example {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .function { color: #dcdcaa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-item"><a href="{% url 'home' %}">🏠 Home</a></div>
+            <div class="sidebar-item"><a href="{% url 'theory' %}">🌐 Teoria</a></div>
+            <div class="sidebar-item"><a href="{% url 'methods' %}">🔧 Metodi</a></div>
+            <div class="sidebar-item active"><a href="{% url 'practice' %}">✍️ Pratica</a> <span class="arrow">👈</span></div>
+            <div class="sidebar-item"><a href="{% url 'exercises' %}">💪 Esercizi</a></div>
+            <div class="sidebar-item"><a href="{% url 'quiz_home' %}">📝 Quiz</a></div>
+        </div>
+
+        <div class="main-area">
+            <div class="header">
+                <h1>✍️ Pratica con le API</h1>
+            </div>
+
+        <div class="main-content">
+            <div class="exercise-box">
+                <div class="exercise-header" onclick="toggleExercise('ex1')">
+                    <div class="exercise-title">🎯 Esercizio 1: GET Request</div>
+                    <div class="exercise-toggle">+</div>
+                </div>
+                <div id="ex1" class="exercise-content" style="display: none;">
+                    <p style="font-size: 1.1em; margin: 15px 0;">
+                        Premi il pulsante per fare una richiesta GET vera!
+                    </p>
+
+                    <button class="test-btn" onclick="showGetRequest()">
+                        🚀 Fai una Richiesta GET
+                    </button>
+
+                    <div class="simulation-box">
+                        <div class="simulation-header">
+                            <div class="simulation-url">https://jsonplaceholder.typicode.com/users?_limit=3</div>
+                        </div>
+                        <div class="simulation-content">
+                            <div class="simulation-loading">Caricamento in corso...</div>
+                        </div>
+                    </div>
+
+                    <div id="result1" class="result"></div>
+
+                    <div class="sub-exercise-box">
+                        <div class="exercise-header" onclick="toggleExercise('exercise-1')">
+                            <div class="exercise-title">📚 Esercizio Pratico: GET Request</div>
+                            <div class="exercise-toggle">+</div>
+                        </div>
+                        <div id="exercise-1" class="exercise-content" style="display: none;">
+                            <p><strong>Obiettivo:</strong> Fare una richiesta GET a un'API pubblica e visualizzare i dati.</p>
+                            <div class="code-example">
+                                <span class="keyword">import</span> requests<br><br>
+                                <span class="comment"># Definizione dell'URL</span><br>
+                                url = <span class="string">"https://jsonplaceholder.typicode.com/users"</span><br>
+                                <br>
+                                <span class="comment"># Esecuzione della richiesta GET</span><br>
+                                response = requests.<span class="function">get</span>(url)<br>
+                                <br>
+                                <span class="comment"># Verifica dello status code</span><br>
+                                <span class="keyword">if</span> response.status_code == 200:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Stampa della risposta</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(response.json())<br>
+                                <span class="keyword">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Stampa dell'errore</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="string">"Errore nella richiesta:"</span>, response.status_code)
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <div class="exercise-header" onclick="toggleExercise('ex3')">
+                    <div class="exercise-title">🎯 Esercizio 3: Analisi Risposta API</div>
+                    <div class="exercise-toggle">+</div>
+                </div>
+                <div id="ex3" class="exercise-content" style="display: none;">
+                    <p style="font-size: 1.1em; margin: 15px 0;">
+                        Analizza la struttura dei dati restituiti dall'API. Cosa noti dei campi e dei valori?
+                    </p>
+
+                    <div class="interactive-section">
+                        <h4>🔍 Osserva la risposta JSON:</h4>
+                        <div id="api-analysis" class="json-response">
+                            {/* I dati verranno caricati qui */}
+                        </div>
+                        <p><strong>Domande da considerare:</strong></p>
+                        <ul>
+                            <li>Qual è la struttura gerarchica dei dati?</li>
+                            <li>Che tipo di informazioni contiene ogni campo?</li>
+                            <li>Come vengono rappresentate le relazioni tra dati?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <div class="exercise-header" onclick="toggleExercise('ex4')">
+                    <div class="exercise-title">🎯 Esercizio 4: Sicurezza nelle API</div>
+                    <div class="exercise-toggle">+</div>
+                </div>
+                <div id="ex4" class="exercise-content" style="display: none;">
+                    <p style="font-size: 1.1em; margin: 15px 0;">
+                        Le API spesso richiedono autenticazione. Ecco come gestire richieste con API Key.
+                    </p>
+
+                    <div class="code-example">
+                        <span class="keyword">import</span> requests<br><br>
+                        <span class="comment"># Esempio con autenticazione</span><br>
+                        headers = {<br>
+                        &nbsp;&nbsp;<span class="string">'Authorization'</span>: <span class="string">'Bearer YOUR_API_KEY'</span>,<br>
+                        &nbsp;&nbsp;<span class="string">'Content-Type'</span>: <span class="string">'application/json'</span><br>
+                        }<br><br>
+                        response = requests.<span class="function">get</span>(<span class="string">'https://api.example.com/data'</span>, headers=headers)<br>
+                        <span class="keyword">print</span>(response.json())
+                    </div>
+
+                    <div class="interactive-section">
+                        <h4>🔐 Concetti di sicurezza:</h4>
+                        <ul>
+                            <li><strong>API Keys:</strong> Chiavi di accesso univoche</li>
+                            <li><strong>OAuth:</strong> Protocollo di autorizzazione</li>
+                            <li><strong>HTTPS:</strong> Comunicazione criptata</li>
+                            <li><strong>Rate Limiting:</strong> Limite richieste per prevenire abusi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="database-section">
+                <h3>🗄️ Database Simulato</h3>
+                <p>Qui puoi vedere i dati che vengono utilizzati negli esercizi. Il database contiene utenti e post con nomi e città siciliane!</p>
+
+                <div class="database-tabs">
+                    <button class="db-tab active" onclick="showDatabase(event, 'users')">👥 Utenti</button>
+                    <button class="db-tab" onclick="showDatabase(event, 'posts')">📝 Post</button>
+                </div>
+
+                <div class="database-content">
+                    <div id="users-content">
+                        <!-- Users will be loaded here -->
+                    </div>
+                    <div id="posts-content" style="display: none;">
+                        <!-- Posts will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            </div>
+
+            <div class="exercise-box">
+                <div class="exercise-header" onclick="toggleExercise('ex2')">
+                    <div class="exercise-title">🎯 Esercizio 2: POST Request</div>
+                    <div class="exercise-toggle">+</div>
+                </div>
+                <div id="ex2" class="exercise-content" style="display: none;">
+                    <p style="font-size: 1.1em; margin: 15px 0;">
+                        Crea un nuovo utente!
+                    </p>
+
+                    <input type="text" id="userName" placeholder="Nome utente" style="padding: 15px; width: 100%; font-size: 1.1em; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px;">
+
+                    <button class="test-btn" onclick="testPostRequest()">
+                        ➕ Crea Utente
+                    </button>
+
+                    <div id="result2" class="result"></div>
+                </div>
+            </div>
+        </div>
+                <div id="database-content" class="database-content">
+                    <!-- Database content will be loaded here -->
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        // Database simulator
+        let currentDatabase = 'users';
+        let databaseData = {
+            users: [],
+            posts: []
+        };
+
+        // Carica dati iniziali
+        async function loadDatabase() {
+            try {
+                const usersResponse = await fetch('https://jsonplaceholder.typicode.com/users');
+                let users = await usersResponse.json();
+
+                // Sostituisci nomi con nomi siciliani
+                const italianNames = [
+                    'Salvatore Russo', 'Rosa Messina', 'Giuseppe Caruso', 'Anna Lombardo', 'Luca Marino',
+                    'Francesca Greco', 'Antonio Romano', 'Maria Vitale', 'Roberto Pappalardo', 'Elena Puglisi'
+                ];
+                const sicilianCities = [
+                    'Palermo', 'Catania', 'Messina', 'Siracusa', 'Trapani',
+                    'Ragusa', 'Caltanissetta', 'Agrigento', 'Enna', 'Palermo'
+                ];
+                users.forEach((user, index) => {
+                    if (index < italianNames.length) {
+                        user.name = italianNames[index];
+                        user.email = italianNames[index].toLowerCase().replace(' ', '.') + '@example.com';
+                        if (user.address) {
+                            user.address.city = sicilianCities[index] || 'Palermo';
+                        }
+                    }
+                });
+
+                databaseData.users = users;
+
+                const postsResponse = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
+                databaseData.posts = await postsResponse.json();
+
+                showUsers();
+                showPosts();
+            } catch (error) {
+                console.error('Errore nel caricamento del database:', error);
+            }
+        }
+
+        function showUsers() {
+            const content = document.getElementById('users-content');
+            const users = databaseData.users;
+            content.innerHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Città</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${users.slice(0, 5).map(user => `
+                            <tr>
+                                <td>${user.id}</td>
+                                <td>${user.name}</td>
+                                <td>${user.email}</td>
+                                <td>${user.address?.city || 'N/A'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function showPosts() {
+            const content = document.getElementById('posts-content');
+            const posts = databaseData.posts;
+            content.innerHTML = posts.map(post => `
+                <div class="data-item">
+                    <h5>Post #${post.id}: ${post.title}</h5>
+                    <p>${post.body.substring(0, 100)}...</p>
+                    <small>Autore: Utente ${post.userId}</small>
+                </div>
+            `).join('');
+        }
+                    }
+                });
+
+                databaseData.users = users;
+
+                const postsResponse = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
+                databaseData.posts = await postsResponse.json();
+
+                showDatabase('users');
+            } catch (error) {
+                console.error('Errore nel caricamento del database:', error);
+            }
+        }
+
+        // Mostra database
+        function showDatabase(event, type) {
+            currentDatabase = type;
+            document.querySelectorAll('.db-tab').forEach(tab => tab.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // Se chiamato programmaticamente, attiva il tab corrispondente
+                const tab = document.querySelector(`.db-tab[onclick*="showDatabase(event, '${type}')"]`);
+                if (tab) tab.classList.add('active');
+            }
+
+            const content = document.getElementById('database-content');
+            const data = databaseData[type];
+
+            if (type === 'users') {
+                content.innerHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Città</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.map(user => `
+                                <tr>
+                                    <td>${user.id}</td>
+                                    <td>${user.name}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.address?.city || 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else if (type === 'posts') {
+                content.innerHTML = data.map(post => `
+                    <div class="data-item">
+                        <h4>Post #${post.id}: ${post.title}</h4>
+                        <p>${post.body}</p>
+                        <small>Autore: Utente ${post.userId}</small>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Test GET request
+        function showGetRequest() {
+            const simulationContent = document.querySelector('.simulation-content');
+            simulationContent.innerHTML = '<div class="simulation-loading">Caricamento in corso...</div>';
+
+            fetch('https://jsonplaceholder.typicode.com/users?_limit=3')
+                .then(response => response.json())
+                .then(data => {
+                    simulationContent.innerHTML = `
+                        <pre class="json-response">${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    document.getElementById('result1').innerHTML = `
+                        <div class="success">✅ Richiesta GET completata con successo!</div>
+                    `;
+                })
+                .catch(error => {
+                    simulationContent.innerHTML = '<div class="error">Errore nel caricamento</div>';
+                    document.getElementById('result1').innerHTML = `
+                        <div class="error">❌ Errore: ${error.message}</div>
+                    `;
+                });
+        }
+
+        // Test POST request
+        function testPostRequest() {
+            const userName = document.getElementById('userName').value;
+            if (!userName) {
+                document.getElementById('result2').innerHTML = '<div class="error">❌ Inserisci un nome!</div>';
+                return;
+            }
+
+            fetch('https://jsonplaceholder.typicode.com/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: userName,
+                    email: `${userName.toLowerCase()}@test.com`,
+                    address: { city: 'Roma' }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Aggiungi al database simulato
+                databaseData.users.push(data);
+                showUsers(); // Aggiorna vista
+
+                document.getElementById('result2').innerHTML = `
+                    <div class="success">✅ Utente creato con successo! Controlla il database aggiornato.</div>
+                    <pre class="json-response">${JSON.stringify(data, null, 2)}</pre>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('result2').innerHTML = `
+                    <div class="error">❌ Errore: ${error.message}</div>
+                `;
+            });
+        }
+
+        // Toggle esercizio
+        function toggleExercise(id) {
+            const content = document.getElementById(id);
+            const toggle = content.previousElementSibling.querySelector('.exercise-toggle');
+
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                toggle.textContent = '+';
+            } else {
+                content.style.display = 'block';
+                toggle.textContent = '-';
+            }
+        }
+
+        // Mostra analisi API
+        function showAPIAnalysis() {
+            const analysisDiv = document.getElementById('api-analysis');
+            if (databaseData.users && databaseData.users.length > 0) {
+                const sampleUser = databaseData.users[0];
+                analysisDiv.textContent = JSON.stringify(sampleUser, null, 2);
+            }
+        }
+
+        // Inizializza database al caricamento
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDatabase();
+            // Mostra analisi API quando si apre l'esercizio 3
+            document.getElementById('ex3').addEventListener('click', function() {
+                setTimeout(showAPIAnalysis, 100);
+            });
+        });
+    </script>
+</body>
+</html>

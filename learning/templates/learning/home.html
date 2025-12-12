@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Learning Django</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+            25% { background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); }
+            50% { background: linear-gradient(225deg, #667eea 0%, #764ba2 100%); }
+            75% { background: linear-gradient(270deg, #667eea 0%, #764ba2 100%); }
+            100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        }
+
+        .container {
+            display: flex;
+            max-width: calc(100vw - 40px);
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-right: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .sidebar-item:hover {
+            background: #e9ecef;
+        }
+
+        .sidebar-item.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .sidebar-item a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        .arrow {
+            color: #28a745;
+            font-weight: bold;
+            margin-left: 5px;
+            font-size: 2em;
+            line-height: 1;
+            vertical-align: middle;
+        }
+
+        .main-area {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #764ba2;
+        }
+
+        .main-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .welcome-text {
+            font-size: 1.2em;
+            margin: 20px 0;
+            color: #666;
+        }
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            border: 1px solid #28a745;
+            color: #155724;
+            display: none;
+        }
+
+        .server-message {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #333;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .exercise-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e7f3ff;
+            border-radius: 10px;
+            border: 2px solid #2196F3;
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .exercise-title {
+            font-size: 1.2em;
+            color: #2196F3;
+            font-weight: bold;
+        }
+
+        .exercise-toggle {
+            font-size: 1.5em;
+            color: #2196F3;
+        }
+
+        .exercise-content {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .exercise-code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .visual-demo {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .box {
+            width: 200px;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .client {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .server {
+            background: #2196F3;
+            color: white;
+        }
+
+        .arrow {
+            font-size: 3em;
+            color: #666;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .request-demo {
+            margin: 30px 0;
+            padding: 25px;
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            border-radius: 10px;
+        }
+
+        .method-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .method-btn {
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .method-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .get { background: #4CAF50; }
+        .post { background: #2196F3; }
+        .put { background: #FF9800; }
+        .delete { background: #f44336; }
+
+        .code-example {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .function { color: #dcdcaa; }
+        .comment { color: #6a9955; }
+
+        .output {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #4CAF50;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        .interactive-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+        }
+
+        .simulation-box {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .simulation-header {
+            padding: 10px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .simulation-url {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #666;
+            padding: 5px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .simulation-content {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        .simulation-loading {
+            font-style: italic;
+        }
+
+        .simulation-result {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .simulation-success {
+            padding: 10px;
+            background: #d4edda;
+            border-bottom: 1px solid #ddd;
+            border-radius: 5px 5px 0 0;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .simulation-data {
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #333;
+            background: #f8f9fa;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .simulation-data pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .test-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .test-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .step {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .emoji {
+            font-size: 2em;
+            margin-right: 10px;
+        }
+
+        .exercise {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .exercise h3 {
+            color: #667eea;
+        }
+
+        .exercise-code {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .hint {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .quiz-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .quiz-options {
+            margin-top: 15px;
+        }
+
+        .quiz-option {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: #e9ecef;
+        }
+
+        .quiz-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .quiz-feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        .quiz-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .quiz-btn:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-item active"><a href="{% url 'home' %}">🏠 Home</a> <span class="arrow">👈</span></div>
+            <div class="sidebar-item"><a href="{% url 'theory' %}">🌐 Teoria</a></div>
+            <div class="sidebar-item"><a href="{% url 'methods' %}">🔧 Metodi</a></div>
+            <div class="sidebar-item"><a href="{% url 'practice' %}">✍️ Pratica</a></div>
+            <div class="sidebar-item"><a href="{% url 'exercises' %}">💪 Esercizi</a></div>
+            <div class="sidebar-item"><a href="{% url 'quiz_home' %}">📝 Quiz</a></div>
+        </div>
+
+        <div class="main-area">
+            <div class="header">
+                <h1>🎓 API Learning Django</h1>
+            </div>
+
+        <div class="main-content">
+            <h2>Benvenuto nella Guida Interattiva alle API</h2>
+            <p class="welcome-text">Scegli una sezione per iniziare il tuo apprendimento:</p>
+        </div>
+    </div>
+
+
+</body>
+</html>
