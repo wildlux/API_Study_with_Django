@@ -329,9 +329,11 @@
                     {% if question.question_type == 'closed' and question.options %}
                         <div class="quiz-options">
                             {% for option in question.options %}
-                                <div class="quiz-option" onclick="selectOption(this, 'q{{ question.id }}', '{{ forloop.counter|lower }}')">
-                                    {{ option }}
-                                </div>
+                                {% with letters="abcd" %}
+                                    <div class="quiz-option" onclick="selectOption(this, 'q{{ question.id }}', '{{ letters|slice:forloop.counter0:1 }}')">
+                                        {{ option }}
+                                    </div>
+                                {% endwith %}
                             {% endfor %}
                         </div>
                     {% else %}
