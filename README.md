@@ -21,31 +21,31 @@
 
 ### Screenshot dell'applicazione in funzione:
 
-#### 🏠 Homepage
+**🏠 Homepage**  
 ![Homepage](SCREENSHOT_software/Schermata_20251213_003834.png)
 
-#### 🌐 Pagina Teoria
+**🌐 Pagina Teoria**  
 ![Teoria](SCREENSHOT_software/Schermata_20251213_003842.png)
 
-#### 🔧 Metodi HTTP
+**🔧 Metodi HTTP**  
 ![Metodi](SCREENSHOT_software/Schermata_20251213_003851.png)
 
-#### ✍️ Pagina Pratica (10 Esercizi)
+**✍️ Pagina Pratica (10 Esercizi)**  
 ![Pratica](SCREENSHOT_software/Schermata_20251213_003856.png)
 
-#### 📝 Quiz Interattivo
+**📝 Quiz Interattivo**  
 ![Quiz](SCREENSHOT_software/Schermata_20251213_003905.png)
 
-#### 📊 Risultati Quiz
+**📊 Risultati Quiz**  
 ![Risultati](SCREENSHOT_software/Schermata_20251213_003924.png)
 
-#### 👑 Admin Interface
-![Admin](SCREENSHOT_software/Schermata_20251213_003937.png)
+**🎯 Database Comparison**  
+![Database](SCREENSHOT_software/Schermata_20251213_003937.png)
 
-#### 🎯 Database Comparison
-![Database](SCREENSHOT_software/Schermata_20251213_003944.png)
+**👑 Admin Interface**  
+![Admin](SCREENSHOT_software/Schermata_20251213_003944.png)
 
-#### 📈 Final Interface
+**📈 Final Interface**  
 ![Final](SCREENSHOT_software/Schermata_20251213_004003.png)
 
 > **💡 Tutti gli screenshot sono disponibili nella cartella [SCREENSHOT_software/](SCREENSHOT_software/)**
