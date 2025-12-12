@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import requests
 import json
+from django.shortcuts import redirect
 from .models import Question
 
 def home(request):
@@ -115,7 +116,6 @@ def check_all_answers(request):
         request.session['quiz_results'] = results
 
         # Reindirizza alla pagina dei risultati
-        from django.shortcuts import redirect
         return redirect('quiz_results')
 
     return render(request, 'learning/quiz_home.html')
