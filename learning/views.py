@@ -84,7 +84,7 @@ def quiz_home(request):
     })
 
 def check_all_answers(request):
-    """Verifica tutte le risposte del quiz."""
+    """Verifica tutte le risposte del quiz e reindirizza ai risultati."""
     if request.method == 'POST':
         questions = Question.objects.filter(active=True).order_by('order')
         score = 0
@@ -107,10 +107,32 @@ def check_all_answers(request):
 
         total = questions.count()
         percentage = (score / total * 100) if total > 0 else 0
+
+        # Salva i risultati nella sessione
         request.session['quiz_score'] = score
-        return render(request, 'learning/quiz_final_result.html', {'score': score, 'total': total, 'percentage': int(percentage), 'results': results})
+        request.session['quiz_total'] = total
+        request.session['quiz_percentage'] = int(percentage)
+        request.session['quiz_results'] = results
+
+        # Reindirizza alla pagina dei risultati
+        from django.shortcuts import redirect
+        return redirect('quiz_results')
 
     return render(request, 'learning/quiz_home.html')
+
+def quiz_results(request):
+    """Mostra i risultati finali del quiz."""
+    score = request.session.get('quiz_score', 0)
+    total = request.session.get('quiz_total', 0)
+    percentage = request.session.get('quiz_percentage', 0)
+    results = request.session.get('quiz_results', [])
+
+    return render(request, 'learning/quiz_final_result.html', {
+        'score': score,
+        'total': total,
+        'percentage': percentage,
+        'results': results
+    })
 
 def check_answer(request):
     """Verifica la risposta del quiz."""
