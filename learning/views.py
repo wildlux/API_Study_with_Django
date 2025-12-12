@@ -74,9 +74,14 @@ def test_post_request(request):
 
 def quiz_home(request):
     """Pagina principale del quiz."""
+    questions = Question.objects.filter(active=True).order_by('order')
     score = request.session.get('quiz_score', 0)
     width = score * 10
-    return render(request, 'learning/quiz_home.html', {'score': score, 'width': width})
+    return render(request, 'learning/quiz_home.html', {
+        'questions': questions,
+        'score': score,
+        'width': width
+    })
 
 def check_all_answers(request):
     """Verifica tutte le risposte del quiz."""
