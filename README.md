@@ -17,6 +17,53 @@
 - Analizzare strutture JSON
 - Implementare sicurezza nelle API
 
+## 📸 Anteprima Applicazione
+
+### Screenshot dell'applicazione in funzione:
+
+#### 🏠 Homepage
+![Homepage](SCREENSHOT_software/Schermata_20251213_003834.png)
+
+#### 🌐 Pagina Teoria
+![Teoria](SCREENSHOT_software/Schermata_20251213_003842.png)
+
+#### 🔧 Metodi HTTP
+![Metodi](SCREENSHOT_software/Schermata_20251213_003851.png)
+
+#### ✍️ Pagina Pratica (10 Esercizi)
+![Pratica](SCREENSHOT_software/Schermata_20251213_003856.png)
+
+#### 📝 Quiz Interattivo
+![Quiz](SCREENSHOT_software/Schermata_20251213_003905.png)
+
+#### 📊 Risultati Quiz
+![Risultati](SCREENSHOT_software/Schermata_20251213_003924.png)
+
+#### 👑 Admin Interface
+![Admin](SCREENSHOT_software/Schermata_20251213_003937.png)
+
+#### 🎯 Database Comparison
+![Database](SCREENSHOT_software/Schermata_20251213_003944.png)
+
+#### 📈 Final Interface
+![Final](SCREENSHOT_software/Schermata_20251213_004003.png)
+
+> **💡 Tutti gli screenshot sono disponibili nella cartella [SCREENSHOT_software/](SCREENSHOT_software/)**
+
+---
+
+## 🌐 Demo Online (Opzionale)
+
+Se vuoi vedere l'applicazione in funzione **senza installarla**, puoi:
+
+1. **Visitare il repository:** [API_Study_with_Django](https://github.com/wildlux/API_Study_with_Django)
+2. **Scarica gli screenshot** dalla cartella `SCREENSHOT_software/`
+3. **Guarda i video demo** (se disponibili)
+
+**L'applicazione è progettata per funzionare localmente** sul tuo computer per garantire privacy e sicurezza.
+
+---
+
 ## ✨ Caratteristiche Principali
 
 ### 🏠 **Home Page**
