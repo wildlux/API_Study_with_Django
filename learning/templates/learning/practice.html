@@ -426,9 +426,166 @@
                                         <span class="keyword">else</span>:<br>
                                         &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Stampa dell'errore</span><br>
                                         &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="string">"Errore nella richiesta:"</span>, response.status_code)
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <div class="exercise-header" onclick="toggleExercise('ex3')">
+                            <div class="exercise-title">🎯 Esercizio 3: PUT Request</div>
+                            <div class="exercise-toggle">+</div>
+                        </div>
+                        <div id="ex3" class="exercise-content" style="display: none;">
+                            <p style="font-size: 1.1em; margin: 15px 0;">
+                                Modifica un utente esistente! Aggiorna il nome di Salvatore Russo.
+                            </p>
+
+                            <input type="text" id="updateName" placeholder="Nuovo nome" value="Salvatore Rossi" style="padding: 15px; width: 100%; font-size: 1.1em; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px;">
+
+                            <button class="test-btn" onclick="testPutRequest()">
+                                ✏️ Aggiorna Utente
+                            </button>
+
+                            <div id="result3" class="result"></div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <div class="exercise-header" onclick="toggleExercise('ex4')">
+                            <div class="exercise-title">🎯 Esercizio 4: DELETE Request</div>
+                            <div class="exercise-toggle">+</div>
+                        </div>
+                        <div id="ex4" class="exercise-content" style="display: none;">
+                            <p style="font-size: 1.1em; margin: 15px 0;">
+                                Elimina l'ultimo utente dalla lista modificata!
+                            </p>
+
+                            <button class="test-btn" onclick="testDeleteRequest()" style="background: #dc3545;">
+                                🗑️ Elimina Utente
+                            </button>
+
+                            <div id="result4" class="result"></div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <div class="exercise-header" onclick="toggleExercise('ex5')">
+                            <div class="exercise-title">🎯 Esercizio 5: PATCH Request</div>
+                            <div class="exercise-toggle">+</div>
+                        </div>
+                        <div id="ex5" class="exercise-content" style="display: none;">
+                            <p style="font-size: 1.1em; margin: 15px 0;">
+                                Aggiornamento parziale: cambia solo l'email di Elena Puglisi.
+                            </p>
+
+                            <input type="email" id="patchEmail" placeholder="Nuova email" value="elena.puglisi@nuovaemail.com" style="padding: 15px; width: 100%; font-size: 1.1em; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px;">
+
+                            <button class="test-btn" onclick="testPatchRequest()" style="background: #ffc107; color: #000;">
+                                🔧 Aggiornamento Parziale
+                            </button>
+
+                            <div id="result5" class="result"></div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <div class="exercise-header" onclick="toggleExercise('ex6')">
+                            <div class="exercise-title">🎯 Esercizio 6: HEAD Request</div>
+                            <div class="exercise-toggle">+</div>
+                        </div>
+                        <div id="ex6" class="exercise-content" style="display: none;">
+                            <p style="font-size: 1.1em; margin: 15px 0;">
+                                Richiedi solo gli headers senza il corpo della risposta.
+                            </p>
+
+                            <button class="test-btn" onclick="testHeadRequest()" style="background: #6f42c1;">
+                                📋 Controlla Headers
+                            </button>
+
+                            <div id="result6" class="result"></div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <div class="exercise-header" onclick="toggleExercise('ex7')">
+                            <div class="exercise-title">🎯 Esercizio 7: OPTIONS Request</div>
+                            <div class="exercise-toggle">+</div>
+                        </div>
+                        <div id="ex7" class="exercise-content" style="display: none;">
+                            <p style="font-size: 1.1em; margin: 15px 0;">
+                                Scopri quali metodi HTTP sono supportati dall'endpoint.
+                            </p>
+
+                            <button class="test-btn" onclick="testOptionsRequest()" style="background: #20c997;">
+                                ❓ Metodi Supportati
+                            </button>
+
+                            <div id="result7" class="result"></div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <div class="exercise-header" onclick="toggleExercise('ex8')">
+                            <div class="exercise-title">🎯 Esercizio 8: API con Autenticazione</div>
+                            <div class="exercise-toggle">+</div>
+                        </div>
+                        <div id="ex8" class="exercise-content" style="display: none;">
+                            <p style="font-size: 1.1em; margin: 15px 0;">
+                                Simula una richiesta con header di autenticazione.
+                            </p>
+
+                            <input type="text" id="apiKey" placeholder="API Key" value="my-secret-api-key" style="padding: 15px; width: 100%; font-size: 1.1em; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px;">
+
+                            <button class="test-btn" onclick="testAuthRequest()" style="background: #fd7e14;">
+                                🔐 Richiesta Autenticata
+                            </button>
+
+                            <div id="result8" class="result"></div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <div class="exercise-header" onclick="toggleExercise('ex9')">
+                            <div class="exercise-title">🎯 Esercizio 9: Gestione Errori</div>
+                            <div class="exercise-toggle">+</div>
+                        </div>
+                        <div id="ex9" class="exercise-content" style="display: none;">
+                            <p style="font-size: 1.1em; margin: 15px 0;">
+                                Prova a richiedere un utente che non esiste (ID 999).
+                            </p>
+
+                            <button class="test-btn" onclick="testErrorRequest()" style="background: #dc3545;">
+                                ⚠️ Test Errore 404
+                            </button>
+
+                            <div id="result9" class="result"></div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <div class="exercise-header" onclick="toggleExercise('ex10')">
+                            <div class="exercise-title">🎯 Esercizio 10: API con Parametri</div>
+                            <div class="exercise-toggle">+</div>
+                        </div>
+                        <div id="ex10" class="exercise-content" style="display: none;">
+                            <p style="font-size: 1.1em; margin: 15px 0;">
+                                Filtra gli utenti per città usando parametri di query.
+                            </p>
+
+                            <select id="cityFilter" style="padding: 15px; width: 100%; font-size: 1.1em; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px;">
+                                <option value="Palermo">Palermo</option>
+                                <option value="Catania">Catania</option>
+                                <option value="Messina">Messina</option>
+                                <option value="Siracusa">Siracusa</option>
+                            </select>
+
+                            <button class="test-btn" onclick="testQueryRequest()" style="background: #0dcaf0;">
+                                🔍 Filtra per Città
+                            </button>
+
+                            <div id="result10" class="result"></div>
+                        </div>
+                    </div>
+                </div>
                         </div>
                     </div>
 
@@ -739,6 +896,255 @@
                 content.style.display = 'block';
                 toggle.textContent = '-';
             }
+        }
+
+        // Test PUT request
+        function testPutRequest() {
+            const updateName = document.getElementById('updateName').value;
+            if (!updateName) {
+                document.getElementById('result3').innerHTML = '<div class="error">❌ Inserisci un nome!</div>';
+                return;
+            }
+
+            fetch('https://jsonplaceholder.typicode.com/users/1', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: 1,
+                    name: updateName,
+                    username: 'Bret',
+                    email: 'Sincere@april.biz'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Aggiorna il database modificato
+                const userIndex = databaseData.modified.users.findIndex(u => u.id === 1);
+                if (userIndex !== -1) {
+                    databaseData.modified.users[userIndex].name = updateName;
+                    showModifiedData();
+                    showDatabase(null, 'modified');
+                }
+
+                document.getElementById('result3').innerHTML = `
+                    <div class="success">✅ Utente aggiornato con successo!</div>
+                    <pre class="json-response">${JSON.stringify(data, null, 2)}</pre>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('result3').innerHTML = `
+                    <div class="error">❌ Errore: ${error.message}</div>
+                `;
+            });
+        }
+
+        // Test DELETE request
+        function testDeleteRequest() {
+            // Trova l'ultimo utente nel database modificato
+            const lastUser = databaseData.modified.users[databaseData.modified.users.length - 1];
+            if (!lastUser) {
+                document.getElementById('result4').innerHTML = '<div class="error">❌ Nessun utente da eliminare!</div>';
+                return;
+            }
+
+            fetch(`https://jsonplaceholder.typicode.com/users/${lastUser.id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Rimuovi dall'array modificato
+                    databaseData.modified.users.pop();
+                    showModifiedData();
+                    showDatabase(null, 'modified');
+
+                    document.getElementById('result4').innerHTML = `
+                        <div class="success">✅ Utente eliminato con successo!</div>
+                        <p>Rimosso: ${lastUser.name}</p>
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            })
+            .catch(error => {
+                document.getElementById('result4').innerHTML = `
+                    <div class="error">❌ Errore: ${error.message}</div>
+                `;
+            });
+        }
+
+        // Test PATCH request
+        function testPatchRequest() {
+            const patchEmail = document.getElementById('patchEmail').value;
+            if (!patchEmail) {
+                document.getElementById('result5').innerHTML = '<div class="error">❌ Inserisci una email!</div>';
+                return;
+            }
+
+            fetch('https://jsonplaceholder.typicode.com/users/10', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: patchEmail
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Aggiorna il database modificato
+                const userIndex = databaseData.modified.users.findIndex(u => u.id === 10);
+                if (userIndex !== -1) {
+                    databaseData.modified.users[userIndex].email = patchEmail;
+                    showModifiedData();
+                    showDatabase(null, 'modified');
+                }
+
+                document.getElementById('result5').innerHTML = `
+                    <div class="success">✅ Email aggiornata con successo!</div>
+                    <pre class="json-response">${JSON.stringify(data, null, 2)}</pre>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('result5').innerHTML = `
+                    <div class="error">❌ Errore: ${error.message}</div>
+                `;
+            });
+        }
+
+        // Test HEAD request
+        function testHeadRequest() {
+            fetch('https://jsonplaceholder.typicode.com/users/1', {
+                method: 'HEAD'
+            })
+            .then(response => {
+                let headersInfo = '';
+                response.headers.forEach((value, key) => {
+                    headersInfo += `${key}: ${value}\n`;
+                });
+
+                document.getElementById('result6').innerHTML = `
+                    <div class="success">✅ Headers ricevuti (senza body)!</div>
+                    <pre class="json-response">${headersInfo}</pre>
+                    <p><strong>Status:</strong> ${response.status} ${response.statusText}</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('result6').innerHTML = `
+                    <div class="error">❌ Errore: ${error.message}</div>
+                `;
+            });
+        }
+
+        // Test OPTIONS request
+        function testOptionsRequest() {
+            fetch('https://jsonplaceholder.typicode.com/users', {
+                method: 'OPTIONS'
+            })
+            .then(response => {
+                const allowHeader = response.headers.get('allow') || response.headers.get('Allow');
+                document.getElementById('result7').innerHTML = `
+                    <div class="success">✅ Metodi supportati scoperti!</div>
+                    <pre class="json-response">Allow: ${allowHeader || 'Non specificato'}</pre>
+                    <p><strong>Status:</strong> ${response.status} ${response.statusText}</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('result7').innerHTML = `
+                    <div class="error">❌ Errore: ${error.message}</div>
+                `;
+            });
+        }
+
+        // Test authenticated request
+        function testAuthRequest() {
+            const apiKey = document.getElementById('apiKey').value;
+
+            fetch('https://jsonplaceholder.typicode.com/users/1', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'X-API-Key': apiKey
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result8').innerHTML = `
+                    <div class="success">✅ Richiesta autenticata completata!</div>
+                    <p><strong>Headers inviati:</strong></p>
+                    <ul>
+                        <li>Authorization: Bearer ${apiKey}</li>
+                        <li>X-API-Key: ${apiKey}</li>
+                    </ul>
+                    <pre class="json-response">${JSON.stringify(data, null, 2)}</pre>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('result8').innerHTML = `
+                    <div class="error">❌ Errore: ${error.message}</div>
+                `;
+            });
+        }
+
+        // Test error handling
+        function testErrorRequest() {
+            fetch('https://jsonplaceholder.typicode.com/users/999', {
+                method: 'GET'
+            })
+            .then(response => {
+                if (response.status === 404) {
+                    document.getElementById('result9').innerHTML = `
+                        <div class="error">❌ Errore 404: Utente non trovato!</div>
+                        <p>Questo è un errore previsto. Le API restituiscono codici di stato per indicare problemi:</p>
+                        <ul>
+                            <li><strong>200:</strong> Successo</li>
+                            <li><strong>404:</strong> Non trovato</li>
+                            <li><strong>500:</strong> Errore server</li>
+                        </ul>
+                    `;
+                } else {
+                    response.json().then(data => {
+                        document.getElementById('result9').innerHTML = `
+                            <div class="success">✅ Risposta ricevuta: ${response.status}</div>
+                            <pre class="json-response">${JSON.stringify(data, null, 2)}</pre>
+                        `;
+                    });
+                }
+            })
+            .catch(error => {
+                document.getElementById('result9').innerHTML = `
+                    <div class="error">❌ Errore di rete: ${error.message}</div>
+                `;
+            });
+        }
+
+        // Test query parameters
+        function testQueryRequest() {
+            const cityFilter = document.getElementById('cityFilter').value;
+
+            // Simula una richiesta con parametri di query
+            // Poiché JSONPlaceholder non supporta filtri reali, simuliamo il comportamento
+            const filteredUsers = databaseData.original.users.filter(user =>
+                user.address && user.address.city === cityFilter
+            );
+
+            document.getElementById('result10').innerHTML = `
+                <div class="success">✅ Filtro applicato per città: ${cityFilter}</div>
+                <p><strong>Utenti trovati:</strong> ${filteredUsers.length}</p>
+                ${filteredUsers.length > 0 ? `
+                    <div style="margin-top: 15px;">
+                        ${filteredUsers.map(user => `
+                            <div style="background: #f8f9fa; padding: 10px; margin: 5px 0; border-radius: 5px;">
+                                <strong>${user.name}</strong> - ${user.email} (${user.address.city})
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : '<p>Nessun utente trovato in questa città.</p>'}
+                <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                    <strong>URL simulata:</strong> /api/users?city=${cityFilter}
+                </p>
+            `;
         }
 
         // Inizializza database al caricamento
