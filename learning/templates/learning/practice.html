@@ -330,6 +330,26 @@
             min-width: 0;
         }
 
+        .database-section-item {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+        }
+
+        .database-section-item h4 {
+            margin-bottom: 15px;
+            color: #e65100;
+            border-bottom: 2px solid #ff9800;
+            padding-bottom: 5px;
+        }
+
+        .database-section-item h5 {
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
         @media (max-width: 768px) {
             .practice-layout {
                 flex-direction: column;
@@ -339,6 +359,16 @@
             .exercises-column,
             .database-column {
                 width: 100%;
+            }
+
+            .database-content > div > div:first-child,
+            .database-content > div > div:last-child {
+                margin-bottom: 20px;
+            }
+
+            .database-content > div {
+                flex-direction: column !important;
+                gap: 20px !important;
             }
         }
 
@@ -615,9 +645,66 @@
                         <h3>🗄️ Database Simulato</h3>
                         <p>Qui puoi vedere i dati che vengono utilizzati negli esercizi. Il database contiene utenti e post con nomi e città siciliane!</p>
 
-                        <div class="database-tabs">
-                            <button class="db-tab active" onclick="showDatabase(event, 'original')">📊 Originale</button>
-                            <button class="db-tab" onclick="showDatabase(event, 'modified')">🔄 Modificato</button>
+                        <div class="database-content">
+                            <!-- Database Originale -->
+                            <div class="database-section-item">
+                                <h4>📊 Database Originale</h4>
+                                <div style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 30px;">
+                                    <div style="flex: 1;">
+                                        <h5>👥 Utenti Originali</h5>
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Nome</th>
+                                                    <th>Email</th>
+                                                    <th>Città</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="original-users-table">
+                                                <!-- Populated by JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h5>📝 Post Originali</h5>
+                                        <div id="original-posts-list" style="max-height: 300px; overflow-y: auto;">
+                                            <!-- Populated by JavaScript -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Database Modificato -->
+                            <div class="database-section-item">
+                                <h4>🔄 Database Modificato</h4>
+                                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                                    <div style="flex: 1;">
+                                        <h5>👥 Utenti (inclusi quelli creati)</h5>
+                                        <div style="max-height: 300px; overflow-y: auto;">
+                                            <table class="data-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Nome</th>
+                                                        <th>Email</th>
+                                                        <th>Città</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="modified-users-table">
+                                                    <!-- Populated by JavaScript -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h5>📝 Post</h5>
+                                        <div id="modified-posts-list" style="max-height: 300px; overflow-y: auto;">
+                                            <!-- Populated by JavaScript -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="database-content">
@@ -688,135 +775,68 @@
                     posts: [...posts]
                 };
 
-                showOriginalData();
-                showModifiedData(); // Prepara anche i dati modificati
-                showDatabase(null, 'original'); // Mostra originali per default
+                populateOriginalData();
+                populateModifiedData();
             } catch (error) {
                 console.error('Errore nel caricamento del database:', error);
             }
         }
 
-        function showOriginalData() {
-            const content = document.getElementById('original-content');
+        function populateOriginalData() {
+            const usersTable = document.getElementById('original-users-table');
+            const postsList = document.getElementById('original-posts-list');
             const users = databaseData.original.users;
             const posts = databaseData.original.posts;
 
-            content.innerHTML = `
-                <div style="margin-bottom: 20px;">
-                    <h4>👥 Utenti Originali</h4>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>Email</th>
-                                <th>Città</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${users.slice(0, 5).map(user => `
-                                <tr>
-                                    <td>${user.id}</td>
-                                    <td>${user.name}</td>
-                                    <td>${user.email}</td>
-                                    <td>${user.address?.city || 'N/A'}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
+            // Popola tabella utenti originali
+            usersTable.innerHTML = users.slice(0, 5).map(user => `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.address?.city || 'N/A'}</td>
+                </tr>
+            `).join('');
 
-                <div>
-                    <h4>📝 Post Originali</h4>
-                    ${posts.map(post => `
-                        <div class="data-item">
-                            <h5>Post #${post.id}: ${post.title}</h5>
-                            <p>${post.body.substring(0, 100)}...</p>
-                            <small>Autore: Utente ${post.userId}</small>
-                        </div>
-                    `).join('')}
+            // Popola lista post originali
+            postsList.innerHTML = posts.map(post => `
+                <div class="data-item" style="margin-bottom: 10px;">
+                    <h5 style="margin: 0 0 5px 0; font-size: 0.9em;">Post #${post.id}: ${post.title.substring(0, 30)}...</h5>
+                    <p style="margin: 0 0 5px 0; font-size: 0.85em;">${post.body.substring(0, 80)}...</p>
+                    <small style="color: #666;">Autore: Utente ${post.userId}</small>
                 </div>
-            `;
+            `).join('');
         }
 
-        function showModifiedData() {
-            const content = document.getElementById('modified-content');
+        function populateModifiedData() {
+            const usersTable = document.getElementById('modified-users-table');
+            const postsList = document.getElementById('modified-posts-list');
             const users = databaseData.modified.users;
             const posts = databaseData.modified.posts;
 
-            content.innerHTML = `
-                <div style="margin-bottom: 20px;">
-                    <h4>👥 Utenti (inclusi quelli creati)</h4>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>Email</th>
-                                <th>Città</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${users.map(user => `
-                                <tr>
-                                    <td>${user.id}</td>
-                                    <td>${user.name}</td>
-                                    <td>${user.email}</td>
-                                    <td>${user.address?.city || 'N/A'}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
+            // Popola tabella utenti modificati
+            usersTable.innerHTML = users.map(user => `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.address?.city || 'N/A'}</td>
+                </tr>
+            `).join('');
 
-                <div>
-                    <h4>📝 Post</h4>
-                    ${posts.map(post => `
-                        <div class="data-item">
-                            <h5>Post #${post.id}: ${post.title}</h5>
-                            <p>${post.body.substring(0, 100)}...</p>
-                            <small>Autore: Utente ${post.userId}</small>
-                        </div>
-                    `).join('')}
+            // Popola lista post modificati
+            postsList.innerHTML = posts.map(post => `
+                <div class="data-item" style="margin-bottom: 10px;">
+                    <h5 style="margin: 0 0 5px 0; font-size: 0.9em;">Post #${post.id}: ${post.title.substring(0, 30)}...</h5>
+                    <p style="margin: 0 0 5px 0; font-size: 0.85em;">${post.body.substring(0, 80)}...</p>
+                    <small style="color: #666;">Autore: Utente ${post.userId}</small>
                 </div>
-            `;
+            `).join('');
         }
 
-        // Mostra database
-        function showDatabase(event, type) {
-            currentDatabase = type;
-
-            // Gestisci le classi active dei tab
-            document.querySelectorAll('.db-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            // Attiva il tab corretto
-            if (event && event.target) {
-                event.target.classList.add('active');
-            } else {
-                // Se chiamato programmaticamente, attiva il tab corrispondente
-                const originalTab = document.querySelector('.db-tab[onclick*="original"]');
-                const modifiedTab = document.querySelector('.db-tab[onclick*="modified"]');
-
-                if (type === 'original' && originalTab) {
-                    originalTab.classList.add('active');
-                } else if (type === 'modified' && modifiedTab) {
-                    modifiedTab.classList.add('active');
-                }
-            }
-
-            // Mostra/nascondi i contenuti
-            const originalContent = document.getElementById('original-content');
-            const modifiedContent = document.getElementById('modified-content');
-
-            if (type === 'original') {
-                originalContent.style.display = 'block';
-                modifiedContent.style.display = 'none';
-            } else if (type === 'modified') {
-                originalContent.style.display = 'none';
-                modifiedContent.style.display = 'block';
-            }
+        // Aggiorna dati modificati (chiamata quando si modificano i dati)
+        function updateModifiedData() {
+            populateModifiedData();
         }
 
         // Test GET request
@@ -867,10 +887,7 @@
                 databaseData.modified.users.push(data);
 
                 // Aggiorna la visualizzazione dei dati modificati
-                showModifiedData();
-
-                // Passa automaticamente al tab "Modificato" per mostrare il nuovo utente
-                showDatabase(null, 'modified');
+                updateModifiedData();
 
                 document.getElementById('result2').innerHTML = `
                     <div class="success">✅ Utente creato con successo! Guarda la tabella "Modificato" per vedere il nuovo utente aggiunto.</div>
@@ -924,8 +941,7 @@
                 const userIndex = databaseData.modified.users.findIndex(u => u.id === 1);
                 if (userIndex !== -1) {
                     databaseData.modified.users[userIndex].name = updateName;
-                    showModifiedData();
-                    showDatabase(null, 'modified');
+                    updateModifiedData();
                 }
 
                 document.getElementById('result3').innerHTML = `
@@ -956,8 +972,7 @@
                 if (response.ok) {
                     // Rimuovi dall'array modificato
                     databaseData.modified.users.pop();
-                    showModifiedData();
-                    showDatabase(null, 'modified');
+                    updateModifiedData();
 
                     document.getElementById('result4').innerHTML = `
                         <div class="success">✅ Utente eliminato con successo!</div>
@@ -997,8 +1012,7 @@
                 const userIndex = databaseData.modified.users.findIndex(u => u.id === 10);
                 if (userIndex !== -1) {
                     databaseData.modified.users[userIndex].email = patchEmail;
-                    showModifiedData();
-                    showDatabase(null, 'modified');
+                    updateModifiedData();
                 }
 
                 document.getElementById('result5').innerHTML = `
