@@ -344,7 +344,7 @@
                 <div class="quiz-navigation" id="quiz-navigation" style="display: none;">
                     <button type="button" id="prev-btn" class="quiz-btn" onclick="prevQuestion()" disabled>← Precedente</button>
                     <button type="button" id="next-btn" class="quiz-btn" onclick="nextQuestion()">Successiva →</button>
-                    <button type="submit" id="submit-btn" class="quiz-btn" style="display: none; background: #28a745;">📤 Invia Risposte</button>
+                    <button type="submit" id="submit-btn" class="quiz-btn" style="display: none; background: #28a745;" onclick="return validateAndSubmit()">📤 Invia Risposte</button>
                 </div>
             </form>
     </div>
@@ -415,6 +415,22 @@
 
         function updateAnswer(question, value) {
             document.getElementById(`${question}_answer`).value = value;
+        }
+
+        // Valida e invia il quiz
+        function validateAndSubmit() {
+            // Assicurati che tutti i campi abbiano almeno un valore (anche vuoto)
+            for (let i = 0; i < questionIds.length; i++) {
+                const questionId = questionIds[i];
+                const answerField = document.getElementById(`q${questionId}_answer`);
+                if (!answerField.value) {
+                    answerField.value = ''; // Imposta valore vuoto se mancante
+                }
+            }
+
+            // Mostra conferma
+            const confirmed = confirm('Sei sicuro di voler inviare le risposte? Non potrai più modificarle.');
+            return confirmed;
         }
 
         // Vai alla domanda successiva
