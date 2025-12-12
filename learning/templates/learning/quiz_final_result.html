@@ -195,14 +195,32 @@
             </div>
 
             <div class="results-section">
-                <button id="show-wrong-btn" class="show-btn" onclick="showWrongAnswers()">Mostra Risposte Sbagliate</button>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button id="show-correct-btn" class="show-btn" onclick="showCorrectAnswers()">Mostra Risposte Corrette</button>
+                    <button id="show-wrong-btn" class="show-btn" onclick="showWrongAnswers()">Mostra Risposte Sbagliate</button>
+                </div>
+
+                <div id="correct-answers" class="results-list" style="display: none;">
+                    <h3>✅ Risposte Corrette:</h3>
+                    {% for result in results %}
+                        {% if result.is_correct %}
+                            <div class="result-item correct">
+                                <strong>{{ result.question_text }}</strong>
+                                <br>
+                                ✅ Risposta corretta: "{{ result.correct_answer }}"
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
                 <div id="wrong-answers" class="results-list" style="display: none;">
-                    <h3>Risposte Sbagliate:</h3>
+                    <h3>❌ Risposte Sbagliate:</h3>
                     {% for result in results %}
                         {% if not result.is_correct %}
                             <div class="result-item incorrect">
-                                <strong>Domanda {{ result.question }}:</strong>
-                                ❌ Sbagliata - Risposta corretta: {{ result.correct_answer }}
+                                <strong>{{ result.question_text }}</strong>
+                                <br>
+                                ❌ La tua risposta: "{{ result.user_answer }}" - Risposta corretta: "{{ result.correct_answer }}"
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -216,9 +234,30 @@
             <a href="{% url 'home' %}" class="back-btn">🏠 Torna alla Home</a>
 
             <script>
+                function showCorrectAnswers() {
+                    const correctDiv = document.getElementById('correct-answers');
+                    const button = document.getElementById('show-correct-btn');
+
+                    if (correctDiv.style.display === 'none' || correctDiv.style.display === '') {
+                        correctDiv.style.display = 'block';
+                        button.textContent = 'Nascondi Risposte Corrette';
+                    } else {
+                        correctDiv.style.display = 'none';
+                        button.textContent = 'Mostra Risposte Corrette';
+                    }
+                }
+
                 function showWrongAnswers() {
-                    document.getElementById('wrong-answers').style.display = 'block';
-                    document.getElementById('show-wrong-btn').style.display = 'none';
+                    const wrongDiv = document.getElementById('wrong-answers');
+                    const button = document.getElementById('show-wrong-btn');
+
+                    if (wrongDiv.style.display === 'none' || wrongDiv.style.display === '') {
+                        wrongDiv.style.display = 'block';
+                        button.textContent = 'Nascondi Risposte Sbagliate';
+                    } else {
+                        wrongDiv.style.display = 'none';
+                        button.textContent = 'Mostra Risposte Sbagliate';
+                    }
                 }
             </script>
         </div>
