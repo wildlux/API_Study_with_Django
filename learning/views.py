@@ -88,10 +88,16 @@ def check_all_answers(request):
     """Verifica tutte le risposte del quiz e reindirizza ai risultati."""
     if request.method == 'POST':
         # Debug: salva tutti i dati POST ricevuti
-        print("DEBUG - POST data received:", dict(request.POST))
+        post_data = dict(request.POST)
+        print("DEBUG - POST data received:", post_data)
 
         questions = Question.objects.filter(active=True).order_by('order')
         print(f"DEBUG - Found {len(questions)} active questions")
+
+        # Se non ci sono domande, reindirizza
+        if not questions:
+            print("DEBUG - No questions found!")
+            return redirect('quiz_home')
 
         score = 0
         results = []
