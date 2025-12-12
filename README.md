@@ -168,10 +168,11 @@ API_Study_with_Django/
 │       ├── templates/          # Template HTML
 │       ├── static/             # File statici (CSS/JS)
 │       └── admin.py            # Interfaccia amministratore
+├── SCREENSHOT_software/         # 📸 Screenshots dell'applicazione
 ├── venv/                        # Ambiente virtuale Python
 ├── archive/                     # File di sviluppo archiviati
-├── start_django_project.py      # 🚀 Avviatore automatico
-├── avvia_progetto.sh           # Script bash semplice
+├── start_django_project.py      # 🚀 Avviatore automatico Python
+├── avvia_progetto.sh           # 🐚 Script bash per avvio rapido
 └── README.md                   # 📖 Questa documentazione
 ```
 
