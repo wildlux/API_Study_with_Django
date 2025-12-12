@@ -53,6 +53,7 @@
 - Barra di progresso visiva
 - Navigazione tra domande
 - Risultati dettagliati con spiegazioni
+- **Admin Interface**: Modifica domande tramite Django Admin
 
 ## 🚀 Installazione e Avvio
 
@@ -121,6 +122,25 @@ Una volta avviato, apri il browser e vai a: **http://127.0.0.1:8000/**
 - Progress tracking visivo
 - Risultati dettagliati
 - Spiegazioni per risposte errate
+
+### 👑 **Django Admin Interface**
+- **Gestione Domande Quiz**: Aggiungi, modifica, elimina domande
+- **Interfaccia User-Friendly**: Form intuitivi per creare contenuti
+- **Ricerca e Filtri**: Trova facilmente le domande
+- **Ordinamento**: Gestisci l'ordine delle domande
+
+#### Accesso Admin:
+```
+Username: admin
+Password: admin123
+URL: http://127.0.0.1:8000/admin/
+```
+
+#### Come Modificare le Domande:
+1. Accedi a `/admin/` con le credenziali sopra
+2. Clicca su "Learning > Questions"
+3. Aggiungi/modifica domande esistenti
+4. Salva e testa nel quiz
 
 ## 🛠️ Tecnologie Utilizzate
 
