@@ -77,6 +77,7 @@ python start_django_project.py
 ```bash
 ./avvia_progetto.sh
 ```
+*Perfetto per utenti che preferiscono script leggeri o hanno già un ambiente configurato.*
 
 #### Opzione 3: Installazione Manuale
 ```bash
