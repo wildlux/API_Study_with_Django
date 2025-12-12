@@ -87,12 +87,19 @@ def quiz_home(request):
 def check_all_answers(request):
     """Verifica tutte le risposte del quiz e reindirizza ai risultati."""
     if request.method == 'POST':
+        # Debug: salva tutti i dati POST ricevuti
+        print("DEBUG - POST data received:", dict(request.POST))
+
         questions = Question.objects.filter(active=True).order_by('order')
+        print(f"DEBUG - Found {len(questions)} active questions")
+
         score = 0
         results = []
 
         for question in questions:
             user_answer = request.POST.get(f'q{question.id}', '').strip()
+            print(f"DEBUG - Question {question.id}: user_answer='{user_answer}', correct='{question.correct_answer}'")
+
             is_correct = False
             if question.question_type == 'closed':
                 is_correct = user_answer.lower() == question.correct_answer.lower()
@@ -100,6 +107,7 @@ def check_all_answers(request):
                 is_correct = user_answer.lower() == question.correct_answer.lower()
             if is_correct:
                 score += 1
+
             results.append({
                 'question_text': question.text,
                 'question_type': question.question_type,
@@ -111,11 +119,15 @@ def check_all_answers(request):
         total = questions.count()
         percentage = (score / total * 100) if total > 0 else 0
 
+        print(f"DEBUG - Final score: {score}/{total} ({percentage:.1f}%)")
+
         # Salva i risultati nella sessione
         request.session['quiz_score'] = score
         request.session['quiz_total'] = total
         request.session['quiz_percentage'] = int(percentage)
         request.session['quiz_results'] = results
+
+        print("DEBUG - Session data saved, redirecting to results")
 
         # Reindirizza alla pagina dei risultati
         return redirect('quiz_results')
