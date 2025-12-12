@@ -2,6 +2,7 @@ from django.shortcuts import render
 import requests
 import json
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 from .models import Question
 
 def home(request):
@@ -84,6 +85,7 @@ def quiz_home(request):
         'width': width
     })
 
+@csrf_exempt
 def check_all_answers(request):
     """Verifica tutte le risposte del quiz e reindirizza ai risultati."""
     if request.method == 'POST':
