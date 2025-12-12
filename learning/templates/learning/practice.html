@@ -613,49 +613,37 @@
         // Mostra database
         function showDatabase(event, type) {
             currentDatabase = type;
-            document.querySelectorAll('.db-tab').forEach(tab => tab.classList.remove('active'));
+
+            // Gestisci le classi active dei tab
+            document.querySelectorAll('.db-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Attiva il tab corretto
             if (event && event.target) {
                 event.target.classList.add('active');
             } else {
                 // Se chiamato programmaticamente, attiva il tab corrispondente
-                const tab = document.querySelector(`.db-tab[onclick*="showDatabase(event, '${type}')"]`);
-                if (tab) tab.classList.add('active');
+                const usersTab = document.querySelector('.db-tab[onclick*="users"]');
+                const postsTab = document.querySelector('.db-tab[onclick*="posts"]');
+
+                if (type === 'users' && usersTab) {
+                    usersTab.classList.add('active');
+                } else if (type === 'posts' && postsTab) {
+                    postsTab.classList.add('active');
+                }
             }
 
-            const content = document.getElementById('database-content');
-            const data = databaseData[type];
+            // Mostra/nascondi i contenuti
+            const usersContent = document.getElementById('users-content');
+            const postsContent = document.getElementById('posts-content');
 
             if (type === 'users') {
-                content.innerHTML = `
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>Email</th>
-                                <th>Città</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data.map(user => `
-                                <tr>
-                                    <td>${user.id}</td>
-                                    <td>${user.name}</td>
-                                    <td>${user.email}</td>
-                                    <td>${user.address?.city || 'N/A'}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
+                usersContent.style.display = 'block';
+                postsContent.style.display = 'none';
             } else if (type === 'posts') {
-                content.innerHTML = data.map(post => `
-                    <div class="data-item">
-                        <h4>Post #${post.id}: ${post.title}</h4>
-                        <p>${post.body}</p>
-                        <small>Autore: Utente ${post.userId}</small>
-                    </div>
-                `).join('');
+                usersContent.style.display = 'none';
+                postsContent.style.display = 'block';
             }
         }
 
